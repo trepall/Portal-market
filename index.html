@@ -1,0 +1,3061 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portals Market</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #fff;
+            padding-bottom: 80px;
+            transition: background 0.3s;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .close-btn {
+            font-size: 18px;
+            color: #666;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .settings-btn {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .settings-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            border-color: #4facfe;
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            cursor: pointer;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 10;
+        }
+
+        .filter {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            position: relative;
+            user-select: none;
+            transition: all 0.2s;
+        }
+
+        .filter:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .filter-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(42, 42, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 10px;
+            margin-top: 5px;
+            min-width: 150px;
+            max-width: 200px;
+            z-index: 1000;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .filter-option {
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .filter-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .filter-option.active {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+        }
+
+        .price-range {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .price-inputs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .price-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 12px;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .price-input:focus {
+            border-color: #4facfe;
+            outline: none;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border: none;
+            color: #fff;
+            padding: 12px 15px;
+            border-radius: 16px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.3);
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .products-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .product-card {
+            border-radius: 16px;
+            padding: 16px;
+            position: relative;
+            transition: transform 0.2s;
+            background: linear-gradient(135deg, var(--card-color), rgba(42, 42, 42, 0.8));
+            border: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.5s ease-in;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            cursor: pointer;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--card-border);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .product-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .product-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .product-details {
+            flex: 1;
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .product-id {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            padding: 4px 8px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+
+        .product-id:hover {
+            background: rgba(0,0,0,0.5);
+        }
+
+        .product-price-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .product-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            padding: 6px 10px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .cart-btn {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            border: none;
+            color: #fff;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            transition: all 0.2s;
+        }
+
+        .cart-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-icon {
+            width: 20px;
+            height: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #ddd;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(42, 42, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-around;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            text-align: center;
+            font-size: 10px;
+            color: #ddd;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+            transition: all 0.2s;
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        .nav-item.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .nav-market { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>'); }
+        .nav-gifts { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>'); }
+        .nav-wallet { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>'); }
+        .nav-profile { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>'); }
+        .nav-support { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>'); }
+
+        .nav-item.active .nav-icon {
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-item:not(.active) .nav-icon {
+            filter: brightness(0) invert(0.7);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+            flex-shrink: 0;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.6);
+        }
+
+        .avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .avatar-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .avatar-icon {
+            width: 50px;
+            height: 50px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .edit-pencil {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: rgba(79, 172, 254, 0.9);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border: 2px solid white;
+        }
+
+        .profile-avatar:hover .edit-pencil {
+            opacity: 1;
+        }
+
+        .profile-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .profile-name-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .profile-name-container:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: 600;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .edit-icon {
+            width: 16px;
+            height: 16px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.7;
+        }
+
+        .name-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+            width: 100%;
+            padding: 5px 10px;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .name-input:focus {
+            border-color: #4facfe;
+        }
+
+        .balance-section {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.2));
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .balance-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(79, 172, 254, 0.4);
+        }
+
+        .balance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .balance-title {
+            font-size: 18px;
+            color: #ddd;
+        }
+
+        .balance-amount {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .balance-currency {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .balance-currency:hover {
+            transform: scale(1.05);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.2));
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: #ddd;
+            font-size: 16px;
+        }
+
+        .settings-section {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.2));
+            border-radius: 20px;
+            padding: 0;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .settings-item-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .settings-icon {
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .icon-settings { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>'); }
+        .icon-language { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>'); }
+        .icon-currency { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91 1.91.46 3.39 1.24 3.39 3.19 0 1.8-1.39 2.83-3.13 3.16z"/></svg>'); }
+        .icon-support { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>'); }
+
+        .settings-arrow {
+            color: #ddd;
+            font-size: 14px;
+        }
+
+        .total-volume {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.2));
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .total-volume:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .total-volume-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .total-volume-label {
+            color: #ddd;
+            font-size: 16px;
+        }
+
+        .requisites-card {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.2));
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .requisites-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .requisites-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            color: white;
+            font-weight: 600;
+        }
+
+        .requisites-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .deposit-screen, .withdraw-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            z-index: 2000;
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+
+        .deposit-screen.active, .withdraw-screen.active {
+            display: block;
+        }
+
+        .deposit-content, .withdraw-content {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .deposit-header, .withdraw-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .deposit-back, .withdraw-back {
+            font-size: 18px;
+            color: #666;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .deposit-back:hover, .withdraw-back:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .deposit-title, .withdraw-title {
+            font-size: 24px;
+            font-weight: 600;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .deposit-info {
+            margin-top: 15px;
+        }
+
+        .requisites-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .requisites-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4facfe;
+        }
+
+        .requisites-value {
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 12px;
+            border-radius: 8px;
+            word-break: break-all;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .requisites-value:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .withdraw-form {
+            margin-top: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-size: 16px;
+        }
+
+        .form-input:focus {
+            border-color: #4facfe;
+            outline: none;
+        }
+
+        .form-select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            border: none;
+            color: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.4);
+        }
+
+        .balance-currencies {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .balance-currency-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .balance-currency-amount {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .balance-currency-name {
+            font-size: 14px;
+            color: #ddd;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(42, 42, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 15px 20px;
+            max-width: 300px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 2000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease-out;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid #4CAF50;
+        }
+
+        .notification.error {
+            border-left: 4px solid #f44336;
+        }
+
+        .notification.info {
+            border-left: 4px solid #4facfe;
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: #ddd;
+            font-size: 18px;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        #settings-tab {
+            display: none;
+        }
+
+        #settings-tab.active {
+            display: block;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: rgba(42, 42, 42, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            width: 320px;
+            max-width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-option {
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: background 0.2s;
+        }
+
+        .modal-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-option.active {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .modal-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .modal-save {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            color: white;
+        }
+
+        .letter-icon {
+            font-size: 36px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .gifts-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .gift-tab {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+        }
+
+        .gift-tab.active {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+        }
+
+        .gift-tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .sub-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .sub-tab {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s;
+        }
+
+        .sub-tab.active {
+            background: rgba(79, 172, 254, 0.3);
+            border-color: rgba(79, 172, 254, 0.7);
+        }
+
+        .add-product-btn {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border: none;
+            color: #fff;
+            padding: 15px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.3);
+        }
+
+        .add-product-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .instruction-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .instruction-step {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .instruction-step:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #4facfe;
+            font-size: 18px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .cart-remove-btn {
+            background: rgba(244, 67, 54, 0.8);
+            border: none;
+            color: #fff;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-total {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .buy-cart-btn {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            border: none;
+            color: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .buy-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.4);
+        }
+
+        .share-link-container {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .share-link-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4facfe;
+        }
+
+        .share-link-value {
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 12px;
+            border-radius: 8px;
+            word-break: break-all;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 14px;
+        }
+
+        .share-link-value:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .support-categories {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .support-category {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 18px 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .support-category:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .category-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .category-info {
+            flex: 1;
+        }
+
+        .category-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .category-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .category-arrow {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .support-section {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .support-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .support-back {
+            font-size: 18px;
+            color: #4facfe;
+            cursor: pointer;
+            margin-right: 15px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .support-back:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .support-content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .support-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .support-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            font-weight: 600;
+        }
+
+        .support-arrow {
+            transition: transform 0.3s;
+        }
+
+        .support-item.active .support-arrow {
+            transform: rotate(180deg);
+        }
+
+        .support-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+
+        .support-item.active .support-answer {
+            padding: 0 20px 20px 20px;
+            max-height: 500px;
+        }
+
+        .sync-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(42, 42, 42, 0.9);
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .sync-status.syncing {
+            border-color: #4facfe;
+            display: block;
+        }
+
+        .sync-status.success {
+            border-color: #4CAF50;
+            display: block;
+        }
+
+        .sync-status.error {
+            border-color: #f44336;
+            display: block;
+        }
+
+        .sync-btn {
+            background: rgba(79, 172, 254, 0.2);
+            border: 1px solid rgba(79, 172, 254, 0.5);
+            color: #4facfe;
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+
+        .sync-btn:hover {
+            background: rgba(79, 172, 254, 0.3);
+        }
+
+        .sync-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .admin-panel {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .admin-section {
+            margin-bottom: 25px;
+        }
+
+        .admin-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #4facfe;
+        }
+
+        /* Стили для модального окна товара */
+        .product-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-modal-content {
+            background: rgba(42, 42, 42, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 500px;
+            width: 100%;
+            margin: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .product-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .product-modal-title {
+            font-size: 24px;
+            font-weight: 600;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .product-modal-close {
+            font-size: 18px;
+            color: #666;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .product-modal-close:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .product-modal-image {
+            width: 100%;
+            height: 250px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .product-modal-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .product-modal-details {
+            margin-bottom: 20px;
+        }
+
+        .product-modal-price {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .product-modal-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .product-modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .product-modal-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .product-modal-buy {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            color: white;
+        }
+
+        .product-modal-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .product-modal-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .action-icon {
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .icon-remove {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>');
+        }
+
+        .icon-add-market {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>');
+        }
+
+        .icon-share {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>');
+        }
+
+        .product-form-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .product-form-modal.active {
+            display: block;
+        }
+
+        .product-form-content {
+            background: rgba(42, 42, 42, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .product-form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .product-form-back {
+            font-size: 18px;
+            color: #666;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .product-form-back:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .product-form-title {
+            font-size: 24px;
+            font-weight: 600;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .action-btn {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            border: none;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.4);
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+        }
+
+        .action-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="sync-status" class="sync-status"></div>
+
+    <div id="market-tab" class="tab-content active">
+        <div class="container">
+            <div class="header">
+                <h1 id="market-title">Фильтры</h1>
+                <div class="close-btn">×</div>
+            </div>
+
+            <div class="search-container">
+                <input type="text" id="product-search" class="search-input" placeholder="Поиск по ID товара...">
+                <div class="search-icon">🔍</div>
+            </div>
+
+            <div class="filters">
+                <div class="filter" id="model-filter">
+                    <span class="filter-text" id="model-filter-text">Модель</span> <span>▼</span>
+                    <div class="filter-dropdown" id="model-dropdown">
+                        <div class="filter-option active" data-value="all">Все модели</div>
+                    </div>
+                </div>
+                <div class="filter" id="currency-filter">
+                    <span class="filter-text" id="currency-filter-text">Валюта</span> <span>▼</span>
+                    <div class="filter-dropdown" id="currency-dropdown">
+                        <div class="filter-option active" data-value="all">Все валюты</div>
+                        <div class="filter-option" data-value="TON">TON</div>
+                        <div class="filter-option" data-value="RUB">RUB</div>
+                        <div class="filter-option" data-value="USD">USD</div>
+                        <div class="filter-option" data-value="EUR">EUR</div>
+                        <div class="filter-option" data-value="STARS">STARS</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="price-range">
+                <div class="price-inputs">
+                    <input type="text" class="price-input" id="price-min" placeholder="От 100" value="100">
+                    <input type="text" class="price-input" id="price-max" placeholder="До 10000" value="10000">
+                </div>
+            </div>
+
+            <button class="refresh-btn">🔄 <span id="refresh-text">Обновить</span></button>
+
+            <div class="products-list" id="products-list">
+                <!-- Товары загружаются здесь -->
+            </div>
+
+            <div class="loading" id="loading" style="display: none;">⏳ <span id="loading-text">Загрузка...</span></div>
+        </div>
+    </div>
+
+    <div id="gifts-tab" class="tab-content">
+        <div class="container">
+            <div class="header">
+                <h1 id="gifts-title">Подарки</h1>
+                <div class="close-btn">×</div>
+            </div>
+
+            <div class="gifts-tabs">
+                <div class="gift-tab active" id="my-gifts-tab">Мои подарки</div>
+                <div class="gift-tab" id="cart-tab">Корзина</div>
+            </div>
+
+            <div id="my-gifts-content" class="gift-tab-content">
+                <div class="sub-tabs">
+                    <div class="sub-tab active" id="listed-tab">Выставленные</div>
+                    <div class="sub-tab" id="unlisted-tab">Не выставленные</div>
+                </div>
+
+                <div id="listed-gifts" class="sub-tab-content">
+                    <div class="products-list" id="listed-products-list">
+                        <!-- Выставленные подарки -->
+                    </div>
+                    <div style="text-align: center; padding: 40px; color: #ddd; background: rgba(255, 255, 255, 0.1); border-radius: 20px; backdrop-filter: blur(10px); display: none;" id="no-listed-gifts">
+                        <h3>Нет выставленных подарков</h3>
+                    </div>
+                </div>
+
+                <div id="unlisted-gifts" class="sub-tab-content" style="display: none;">
+                    <div class="products-list" id="unlisted-products-list">
+                        <!-- Не выставленные подарки -->
+                    </div>
+                    <div style="text-align: center; padding: 40px; color: #ddd; background: rgba(255, 255, 255, 0.1); border-radius: 20px; backdrop-filter: blur(10px); display: none;" id="no-unlisted-gifts">
+                        <h3>Нет не выставленных подарков</h3>
+                    </div>
+                </div>
+
+                <button class="add-product-btn" id="add-product-btn">+ Добавить товар</button>
+            </div>
+
+            <div id="cart-content" class="gift-tab-content" style="display: none;">
+                <div id="cart-items-container">
+                    <!-- Товары в корзине -->
+                </div>
+                <div id="empty-cart" style="text-align: center; padding: 40px; color: #ddd; background: rgba(255, 255, 255, 0.1); border-radius: 20px; backdrop-filter: blur(10px);">
+                    <h3>Корзина пуста</h3>
+                </div>
+                <div id="cart-total-container" style="display: none;">
+                    <div class="cart-total">
+                        Общая сумма: <span id="cart-total-amount">0</span> TON
+                    </div>
+                    <button class="buy-cart-btn" id="buy-cart-btn">Купить все</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="requisites-tab" class="tab-content">
+        <div class="container">
+            <div class="header">
+                <h1 id="requisites-title">Реквизиты</h1>
+                <div class="close-btn">×</div>
+            </div>
+            
+            <div class="requisites-card">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span id="balance-label">Баланс:</span>
+                    <span><strong id="balance-ton">0 TON</strong></span>
+                </div>
+                
+                <div class="balance-currencies">
+                    <div class="balance-currency-item">
+                        <div class="balance-currency-amount" id="balance-rub">0 ₽</div>
+                        <div class="balance-currency-name">RUB</div>
+                    </div>
+                    <div class="balance-currency-item">
+                        <div class="balance-currency-amount" id="balance-usd">0 $</div>
+                        <div class="balance-currency-name">USD</div>
+                    </div>
+                    <div class="balance-currency-item">
+                        <div class="balance-currency-amount" id="balance-eur">0 €</div>
+                        <div class="balance-currency-name">EUR</div>
+                    </div>
+                    <div class="balance-currency-item">
+                        <div class="balance-currency-amount" id="balance-stars">0 ⭐</div>
+                        <div class="balance-currency-name">STARS</div>
+                    </div>
+                </div>
+                
+                <div class="requisites-actions">
+                    <button class="requisites-btn" id="deposit-btn"><span id="deposit-text">Пополнить</span></button>
+                    <button class="requisites-btn" id="withdraw-btn"><span id="withdraw-text">Вывести</span></button>
+                </div>
+            </div>
+            
+            <div class="requisites-card">
+                <h3 style="margin-bottom: 15px;" id="history-title">История операций</h3>
+                <div style="text-align: center; color: #ddd; padding: 20px;">
+                    <span id="no-operations-text">Пока нет операций</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="profile-tab" class="tab-content">
+        <div class="container">
+            <div class="header">
+                <button class="settings-btn" id="settings-btn">
+                    <div class="settings-icon icon-settings"></div>
+                </button>
+                <h1 id="profile-title">Профиль</h1>
+                <div class="close-btn">×</div>
+            </div>
+
+            <div class="profile-header">
+                <div class="profile-avatar" id="profile-avatar">
+                    <div class="avatar-placeholder">
+                        <div class="avatar-icon" id="avatar-icon"></div>
+                        <img id="avatar-image" class="avatar-image" style="display: none;">
+                    </div>
+                    <div class="edit-pencil">
+                        <div class="edit-pencil-icon"></div>
+                    </div>
+                </div>
+                <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+                <div class="profile-info">
+                    <div class="profile-name-container" id="profile-name-container">
+                        <div class="profile-name" id="profile-name-text">Пользователь</div>
+                        <div class="edit-icon"></div>
+                        <input type="text" class="name-input" id="profile-name-input" style="display: none;" maxlength="20">
+                    </div>
+                </div>
+            </div>
+
+            <div class="balance-section">
+                <div class="balance-header">
+                    <div class="balance-title" id="balance-title-text">Баланс</div>
+                    <div class="balance-currency" id="balance-currency-toggle">₽</div>
+                </div>
+                <div class="balance-amount" id="balance-amount">0.00</div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="gifts-count">0</div>
+                    <div class="stat-label" id="gifts-count-text">Подарков</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="sold-count">0</div>
+                    <div class="stat-label" id="sold-text">Продано</div>
+                </div>
+            </div>
+
+            <div class="total-volume">
+                <div class="total-volume-value" id="total-volume">0 ₽</div>
+                <div class="total-volume-label" id="total-volume-text">Общий объем торгов</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="settings-tab" class="tab-content">
+        <div class="container">
+            <div class="header">
+                <h1 id="settings-title">Настройки</h1>
+                <div class="close-btn" id="settings-close-btn">×</div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-item" id="language-settings">
+                    <div class="settings-item-content">
+                        <div class="settings-icon icon-language"></div>
+                        <div id="language-text">Язык</div>
+                    </div>
+                    <div class="settings-arrow" id="current-language">Русский ›</div>
+                </div>
+                <div class="settings-item" id="currency-settings">
+                    <div class="settings-item-content">
+                        <div class="settings-icon icon-currency"></div>
+                        <div id="currency-text">Валюта</div>
+                    </div>
+                    <div class="settings-arrow" id="current-currency">RUB ›</div>
+                </div>
+                <div class="settings-item" id="support-settings">
+                    <div class="settings-item-content">
+                        <div class="settings-icon icon-support"></div>
+                        <div id="support-text">Поддержка</div>
+                    </div>
+                    <div class="settings-arrow">›</div>
+                </div>
+            </div>
+
+            <div class="admin-panel" id="admin-panel" style="display: none;">
+                <div class="admin-title">Администрирование базы знаний</div>
+                
+                <div class="admin-section">
+                    <div style="margin-bottom: 15px;">
+                        <strong>Статус базы знаний:</strong>
+                        <span id="db-status">Не подключено</span>
+                        <button class="sync-btn" id="test-connection-btn">Проверить подключение</button>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>FAQ записей:</strong>
+                        <span id="faq-count">0</span>
+                        <button class="sync-btn" id="sync-faq-btn">Синхронизировать FAQ</button>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Категории поддержки:</strong>
+                        <span id="categories-count">0</span>
+                        <button class="sync-btn" id="sync-categories-btn">Синхронизировать категории</button>
+                    </div>
+                </div>
+
+                <div class="admin-section">
+                    <div class="admin-title">Добавить новый FAQ</div>
+                    <div class="form-group">
+                        <input type="text" class="form-input" id="new-question" placeholder="Вопрос">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-input" id="new-answer" placeholder="Ответ" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-input" id="new-category" placeholder="Категория">
+                    </div>
+                    <button class="submit-btn" id="add-faq-btn">Добавить FAQ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="support-tab" class="tab-content">
+        <div class="container">
+            <div class="header">
+                <h1>База знаний</h1>
+                <div class="close-btn">×</div>
+            </div>
+
+            <div class="support-categories">
+                <div class="support-category" id="faq-category">
+                    <div class="category-icon">❓</div>
+                    <div class="category-info">
+                        <div class="category-title">Частые вопросы</div>
+                        <div class="category-desc">Ответы на популярные вопросы</div>
+                    </div>
+                    <div class="category-arrow">›</div>
+                </div>
+
+                <div class="support-category" id="support-category">
+                    <div class="category-icon">💬</div>
+                    <div class="category-info">
+                        <div class="category-title">Написать в поддержку</div>
+                        <div class="category-desc">Живая помощь в Telegram</div>
+                    </div>
+                    <div class="category-arrow">›</div>
+                </div>
+            </div>
+
+            <div id="faq-section" class="support-section" style="display: none;">
+                <div class="support-header">
+                    <div class="support-back" id="faq-back-btn">← Назад</div>
+                    <h2>Частые вопросы</h2>
+                </div>
+
+                <div class="support-content" id="faq-content">
+                    <!-- FAQ загружается из базы -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deposit-screen" class="deposit-screen">
+        <div class="deposit-content">
+            <div class="deposit-header">
+                <div class="deposit-back" id="deposit-back-btn">←</div>
+                <h1 class="deposit-title" id="deposit-title-text">Пополнение баланса</h1>
+                <div style="width: 30px;"></div>
+            </div>
+
+            <div class="requisites-card">
+                <p style="margin-bottom: 15px; text-align: center;" id="deposit-instruction-text">Чтобы пополнить баланс отправьте нужную сумму на реквизиты ниже 👇</p>
+                
+                <div class="deposit-info">
+                    <div class="requisites-item">
+                        <div class="requisites-title">TonKeeper</div>
+                        <div class="requisites-value" id="tonkeeper-address">
+                            UQA8t_PXSXu1mfNdwnLVS7BAv4WV6d-L8A2BTn7LA8XL2D-G
+                        </div>
+                    </div>
+                    
+                    <div class="requisites-item">
+                        <div class="requisites-title">Юмани</div>
+                        <div class="requisites-value" id="yoomoney-number">
+                            89202555790
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(79, 172, 254, 0.2); padding: 15px; border-radius: 12px; margin-top: 15px; text-align: center;">
+                        <strong id="deposit-wait-text">После, ожидайте 10-15 минут!</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="withdraw-screen" class="withdraw-screen">
+        <div class="withdraw-content">
+            <div class="withdraw-header">
+                <div class="withdraw-back" id="withdraw-back-btn">←</div>
+                <h1 class="withdraw-title" id="withdraw-title-text">Вывод средств</h1>
+                <div style="width: 30px;"></div>
+            </div>
+
+            <div class="requisites-card">
+                <div class="withdraw-form">
+                    <div class="form-group">
+                        <label class="form-label" id="withdraw-currency-label">Валюта</label>
+                        <select class="form-select" id="withdraw-currency">
+                            <option value="TON">TON</option>
+                            <option value="RUB">RUB</option>
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="STARS">STARS</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" id="withdraw-amount-label">Сумма</label>
+                        <input type="number" class="form-input" id="withdraw-amount" placeholder="Введите сумму" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" id="withdraw-requisites-label">Реквизиты</label>
+                        <input type="text" class="form-input" id="withdraw-requisites" placeholder="Введите реквизиты для вывода">
+                    </div>
+                    
+                    <button class="submit-btn" id="withdraw-submit-btn"><span id="withdraw-button-text">Вывести</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ИСПРАВЛЕННАЯ ФОРМА ДОБАВЛЕНИЯ ТОВАРА -->
+    <div id="product-form-modal" class="product-form-modal">
+        <div class="product-form-content">
+            <div class="product-form-header">
+                <div class="product-form-back" id="product-form-back-btn">←</div>
+                <h1 class="product-form-title">Добавление товара</h1>
+                <div style="width: 30px;"></div>
+            </div>
+
+            <!-- Первый экран - только кнопка -->
+            <div id="add-product-initial" style="text-align: center; padding: 30px 0;">
+                <div style="font-size: 48px; margin-bottom: 20px;">🎁</div>
+                <h3 style="margin-bottom: 15px;">Добавить товар на продажу</h3>
+                <p style="color: #ddd; margin-bottom: 30px; line-height: 1.5;">
+                    Нажмите кнопку ниже, чтобы узнать как добавить товар на продажу
+                </p>
+                <button class="action-btn primary" id="show-instruction-btn" style="padding: 15px 30px; font-size: 16px;">
+                    Показать инструкцию
+                </button>
+            </div>
+
+            <!-- Второй экран - инструкция (появляется после нажатия кнопки) -->
+            <div id="add-product-instruction" style="display: none;">
+                <div class="instruction-card">
+                    <h3 style="margin-bottom: 15px; text-align: center;">Инструкция по добавлению товара</h3>
+                    <div class="instruction-step">
+                        Чтобы выложить товар на продажу передайте его нашей Тех. Поддержке (Realyer) 
+                        <a href="https://t.me/MarketSuportGift" target="_blank" style="color: #4facfe; text-decoration: none;">@MarketSuportGift</a>
+                    </div>
+                    <div class="instruction-step">
+                        После передачи товар автоматически появится в вашем инвентаре в течение 7 минут
+                    </div>
+                    <div class="instruction-step">
+                        Если товар не появился в течение 7 минут, напишите в поддержку
+                    </div>
+                </div>
+
+                <div class="instruction-card" style="background: rgba(76, 175, 80, 0.2); border-color: rgba(76, 175, 80, 0.5);">
+                    <h3 style="margin-bottom: 15px; text-align: center; color: #4CAF50;">Автоматическое добавление</h3>
+                    <div class="instruction-step">
+                        После передачи товара поддержке, он автоматически появится в вашем инвентаре
+                    </div>
+                    <div class="instruction-step">
+                        Вам не нужно заполнять никакие формы или анкеты
+                    </div>
+                    <div class="instruction-step">
+                        Просто дождитесь появления товара в разделе "Не выставленные"
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="action-btn primary" id="contact-support-btn" style="padding: 15px 30px; font-size: 16px; margin-right: 10px;">
+                        Написать в поддержку
+                    </button>
+                    <button class="action-btn secondary" id="back-to-initial-btn" style="padding: 15px 30px; font-size: 16px;">
+                        Назад
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="language-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title" id="language-modal-title">Выберите язык</div>
+            <div class="modal-option active" data-value="ru">Русский</div>
+            <div class="modal-option" data-value="en">English</div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-cancel" id="language-cancel-btn"><span id="cancel-text">Отмена</span></button>
+                <button class="modal-btn modal-save" id="language-save-btn"><span id="save-text">Сохранить</span></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="currency-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title" id="currency-modal-title">Выберите валюту</div>
+            <div class="modal-option active" data-value="RUB">RUB - Российский рубль</div>
+            <div class="modal-option" data-value="USD">USD - Доллар США</div>
+            <div class="modal-option" data-value="EUR">EUR - Евро</div>
+            <div class="modal-option" data-value="TON">TON - Toncoin</div>
+            <div class="modal-option" data-value="STARS">STARS - Stars</div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-cancel" id="currency-cancel-btn"><span id="cancel-text-2">Отмена</span></button>
+                <button class="modal-btn modal-save" id="currency-save-btn"><span id="save-text-2">Сохранить</span></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification-container"></div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active" id="nav-market">
+            <div class="nav-icon nav-market"></div>
+            <div id="nav-market-text">Маркет</div>
+        </div>
+        <div class="nav-item" id="nav-gifts">
+            <div class="nav-icon nav-gifts"></div>
+            <div id="nav-gifts-text">Подарки</div>
+        </div>
+        <div class="nav-item" id="nav-wallet">
+            <div class="nav-icon nav-wallet"></div>
+            <div id="nav-wallet-text">Реквизиты</div>
+        </div>
+        <div class="nav-item" id="nav-support">
+            <div class="nav-icon nav-support"></div>
+            <div id="nav-support-text">Поддержка</div>
+        </div>
+        <div class="nav-item" id="nav-profile">
+            <div class="nav-icon nav-profile"></div>
+            <div id="nav-profile-text">Профиль</div>
+        </div>
+    </div>
+
+    <script>
+        // ПОЛНЫЙ СПИСОК NFT ТОВАРОВ (99 товаров)
+        const realGifts = [
+            // 1-15
+            { id: "signet_ring_001", name: "Signet Ring", priceTON: "15.2", color: "rgba(79, 172, 254, 0.3)", border: "rgba(79, 172, 254, 0.7)", icon: "💍", type: "nft" },
+            { id: "skull_flower_002", name: "Skull Flower", priceTON: "8.8", color: "rgba(156, 39, 176, 0.3)", border: "rgba(156, 39, 176, 0.7)", icon: "💀", type: "nft" },
+            { id: "snow_mittens_003", name: "Snow Mittens", priceTON: "3.5", color: "rgba(33, 150, 243, 0.3)", border: "rgba(33, 150, 243, 0.7)", icon: "🧤", type: "nft" },
+            { id: "crystal_ball_004", name: "Crystal Ball", priceTON: "12.7", color: "rgba(0, 188, 212, 0.3)", border: "rgba(0, 188, 212, 0.7)", icon: "🔮", type: "nft" },
+            { id: "golden_key_005", name: "Golden Key", priceTON: "9.3", color: "rgba(255, 193, 7, 0.3)", border: "rgba(255, 193, 7, 0.7)", icon: "🔑", type: "nft" },
+            { id: "mystic_lamp_006", name: "Mystic Lamp", priceTON: "7.1", color: "rgba(255, 152, 0, 0.3)", border: "rgba(255, 152, 0, 0.7)", icon: "💡", type: "nft" },
+            { id: "ancient_scroll_007", name: "Ancient Scroll", priceTON: "6.4", color: "rgba(121, 85, 72, 0.3)", border: "rgba(121, 85, 72, 0.7)", icon: "📜", type: "nft" },
+            { id: "dragon_egg_008", name: "Dragon Egg", priceTON: "18.9", color: "rgba(233, 30, 99, 0.3)", border: "rgba(233, 30, 99, 0.7)", icon: "🥚", type: "nft" },
+            { id: "magic_wand_009", name: "Magic Wand", priceTON: "14.2", color: "rgba(156, 39, 176, 0.3)", border: "rgba(156, 39, 176, 0.7)", icon: "🪄", type: "nft" },
+            { id: "crown_jewels_010", name: "Crown Jewels", priceTON: "25.5", color: "rgba(255, 193, 7, 0.3)", border: "rgba(255, 193, 7, 0.7)", icon: "👑", type: "nft" },
+            { id: "time_turner_011", name: "Time Turner", priceTON: "22.1", color: "rgba(0, 150, 136, 0.3)", border: "rgba(0, 150, 136, 0.7)", icon: "⏳", type: "nft" },
+            { id: "phoenix_feather_012", name: "Phoenix Feather", priceTON: "11.8", color: "rgba(255, 87, 34, 0.3)", border: "rgba(255, 87, 34, 0.7)", icon: "🪶", type: "nft" },
+            { id: "moonstone_013", name: "Moonstone", priceTON: "8.3", color: "rgba(176, 190, 197, 0.3)", border: "rgba(176, 190, 197, 0.7)", icon: "💎", type: "nft" },
+            { id: "sun_dial_014", name: "Sun Dial", priceTON: "13.6", color: "rgba(255, 152, 0, 0.3)", border: "rgba(255, 152, 0, 0.7)", icon: "🌞", type: "nft" },
+            { id: "star_chart_015", name: "Star Chart", priceTON: "10.9", color: "rgba(63, 81, 181, 0.3)", border: "rgba(63, 81, 181, 0.7)", icon: "📊", type: "nft" },
+            // 16-30
+            { id: "crystal_skull_016", name: "Crystal Skull", priceTON: "19.7", color: "rgba(0, 188, 212, 0.3)", border: "rgba(0, 188, 212, 0.7)", icon: "💀", type: "nft" },
+            { id: "golden_compass_017", name: "Golden Compass", priceTON: "14.8", color: "rgba(255, 193, 7, 0.3)", border: "rgba(255, 193, 7, 0.7)", icon: "🧭", type: "nft" },
+            { id: "silver_locket_018", name: "Silver Locket", priceTON: "7.9", color: "rgba(189, 189, 189, 0.3)", border: "rgba(189, 189, 189, 0.7)", icon: "📿", type: "nft" },
+            { id: "emerald_tablet_019", name: "Emerald Tablet", priceTON: "16.3", color: "rgba(76, 175, 80, 0.3)", border: "rgba(76, 175, 80, 0.7)", icon: "📜", type: "nft" },
+            { id: "ruby_slippers_020", name: "Ruby Slippers", priceTON: "12.4", color: "rgba(244, 67, 54, 0.3)", border: "rgba(244, 67, 54, 0.7)", icon: "👠", type: "nft" },
+            { id: "sapphire_amulet_021", name: "Sapphire Amulet", priceTON: "15.1", color: "rgba(33, 150, 243, 0.3)", border: "rgba(33, 150, 243, 0.7)", icon: "📿", type: "nft" },
+            { id: "diamond_crown_022", name: "Diamond Crown", priceTON: "28.9", color: "rgba(176, 190, 197, 0.3)", border: "rgba(176, 190, 197, 0.7)", icon: "👑", type: "nft" },
+            { id: "pearl_necklace_023", name: "Pearl Necklace", priceTON: "11.2", color: "rgba(236, 239, 241, 0.3)", border: "rgba(236, 239, 241, 0.7)", icon: "📿", type: "nft" },
+            { id: "opal_bracelet_024", name: "Opal Bracelet", priceTON: "9.7", color: "rgba(0, 188, 212, 0.3)", border: "rgba(0, 188, 212, 0.7)", icon: "📿", type: "nft" },
+            { id: "topaz_ring_025", name: "Topaz Ring", priceTON: "8.5", color: "rgba(255, 193, 7, 0.3)", border: "rgba(255, 193, 7, 0.7)", icon: "💍", type: "nft" },
+            { id: "amethyst_pendant_026", name: "Amethyst Pendant", priceTON: "10.3", color: "rgba(156, 39, 176, 0.3)", border: "rgba(156, 39, 176, 0.7)", icon: "📿", type: "nft" },
+            { id: "garnet_earrings_027", name: "Garnet Earrings", priceTON: "7.8", color: "rgba(244, 67, 54, 0.3)", border: "rgba(244, 67, 54, 0.7)", icon: "📿", type: "nft" },
+            { id: "jade_statue_028", name: "Jade Statue", priceTON: "13.9", color: "rgba(76, 175, 80, 0.3)", border: "rgba(76, 175, 80, 0.7)", icon: "🗿", type: "nft" },
+            { id: "turquoise_mask_029", name: "Turquoise Mask", priceTON: "11.5", color: "rgba(0, 188, 212, 0.3)", border: "rgba(0, 188, 212, 0.7)", icon: "🎭", type: "nft" },
+            { id: "lapis_lazuli_030", name: "Lapis Lazuli", priceTON: "9.2", color: "rgba(33, 150, 243, 0.3)", border: "rgba(33, 150, 243, 0.7)", icon: "💎", type: "nft" },
+            // 31-45
+            { id: "obsidian_dagger_031", name: "Obsidian Dagger", priceTON: "14.6", color: "rgba(33, 33, 33, 0.3)", border: "rgba(33, 33, 33, 0.7)", icon: "🗡️", type: "nft" },
+            { id: "ivory_horn_032", name: "Ivory Horn", priceTON: "12.1", color: "rgba(236, 239, 241, 0.3)", border: "rgba(236, 239, 241, 0.7)", icon: "📯", type: "nft" },
+            { id: "ebony_box_033", name: "Ebony Box", priceTON: "8.9", color: "rgba(33, 33, 33, 0.3)", border: "rgba(33, 33, 33, 0.7)", icon: "📦", type: "nft" },
+            { id: "silver_goblet_034", name: "Silver Goblet", priceTON: "10.7", color: "rgba(189, 189, 189, 0.3)", border: "rgba(189, 189, 189, 0.7)", icon: "🍷", type: "nft" },
+            { id: "golden_chalice_035", name: "Golden Chalice", priceTON: "17.4", color: "rgba(255, 193, 7, 0.3)", border: "rgba(255, 193, 7, 0.7)", icon: "🏆", type: "nft" },
+            { id: "bronze_mirror_036", name: "Bronze Mirror", priceTON: "9.8", color: "rgba(141, 110, 99, 0.3)", border: "rgba(141, 110, 99, 0.7)", icon: "🪞", type: "nft" },
+            { id: "copper_lamp_037", name: "Copper Lamp", priceTON: "7.3", color: "rgba(184, 134, 11, 0.3)", border: "rgba(184, 134, 11, 0.7)", icon: "💡", type: "nft" },
+            { id: "iron_helm_038", name: "Iron Helm", priceTON: "13.2", color: "rgba(97, 97, 97, 0.3)", border: "rgba(97, 97, 97, 0.7)", icon: "⛑️", type: "nft" },
+            { id: "steel_sword_039", name: "Steel Sword", priceTON: "15.9", color: "rgba(158, 158, 158, 0.3)", border: "rgba(158, 158, 158, 0.7)", icon: "⚔️", type: "nft" },
+            { id: "titanium_shield_040", name: "Titanium Shield", priceTON: "18.3", color: "rgba(176, 190, 197, 0.3)", border: "rgba(176, 190, 197, 0.7)", icon: "🛡️", type: "nft" },
+            { id: "platinum_circlet_041", name: "Platinum Circlet", priceTON: "21.7", color: "rgba(229, 228, 226, 0.3)", border: "rgba(229, 228, 226, 0.7)", icon: "👑", type: "nft" },
+            { id: "adamantium_gauntlet_042", name: "Adamantium Gauntlet", priceTON: "24.5", color: "rgba(97, 97, 97, 0.3)", border: "rgba(97, 97, 97, 0.7)", icon: "🥊", type: "nft" },
+            { id: "mithril_chain_043", name: "Mithril Chain", priceTON: "19.8", color: "rgba(176, 190, 197, 0.3)", border: "rgba(176, 190, 197, 0.7)", icon: "⛓️", type: "nft" },
+            { id: "orichalcum_plate_044", name: "Orichalcum Plate", priceTON: "22.6", color: "rgba(255, 152, 0, 0.3)", border: "rgba(255, 152, 0, 0.7)", icon: "🍽️", type: "nft" },
+            { id: "cobalt_blade_045", name: "Cobalt Blade", priceTON: "16.4", color: "rgba(33, 150, 243, 0.3)", border: "rgba(33, 150, 243, 0.7)", icon: "🗡️", type: "nft" },
+            // 46-60
+            { id: "crystal_wings_046", name: "Crystal Wings", priceTON: "20.9", color: "rgba(0, 188, 212, 0.3)", border: "rgba(0, 188, 212, 0.7)", icon: "🪽", type: "nft" },
+            { id: "phoenix_quill_047", name: "Phoenix Quill", priceTON: "14.3", color: "rgba(255, 87, 34, 0.3)", border: "rgba(255, 87, 34, 0.7)", icon: "🪶", type: "nft" },
+            { id: "dragon_scale_048", name: "Dragon Scale", priceTON: "12.8", color: "rgba(233, 30, 99, 0.3)", border: "rgba(233, 30, 99, 0.7)", icon: "🐉", type: "nft" },
+            { id: "unicorn_horn_049", name: "Unicorn Horn", priceTON: "18.2", color: "rgba(236, 239, 241, 0.3)", border: "rgba(236, 239, 241, 0.7)", icon: "🦄", type: "nft" },
+            { id: "griffin_feather_050", name: "Griffin Feather", priceTON: "15.7", color: "rgba(255, 193, 7, 0.3)", border: "rgba(255, 193, 7, 0.7)", icon: "🪶", type: "nft" },
+            { id: "basilisk_fang_051", name: "Basilisk Fang", priceTON: "13.5", color: "rgba(76, 175, 80, 0.3)", border: "rgba(76, 175, 80, 0.7)", icon: "🐍", type: "nft" },
+            { id: "chimera_claw_052", name: "Chimera Claw", priceTON: "16.9", color: "rgba(255, 152, 0, 0.3)", border: "rgba(255, 152, 0, 0.7)", icon: "🐾", type: "nft" },
+            { id: "hydra_scale_053", name: "Hydra Scale", priceTON: "14.1", color: "rgba(0, 150, 136, 0.3)", border: "rgba(0, 150, 136, 0.7)", icon: "🐉", type: "nft" },
+            { id: "kraken_tentacle_054", name: "Kraken Tentacle", priceTON: "17.6", color: "rgba(63, 81, 181, 0.3)", border: "rgba(63, 81, 181, 0.7)", icon: "🐙", type: "nft" },
+            { id: "leviathan_fin_055", name: "Leviathan Fin", priceTON: "19.4", color: "rgba(33, 150, 243, 0.3)", border: "rgba(33, 150, 243, 0.7)", icon: "🐋", type: "nft" },
+            { id: "behemoth_tusk_056", name: "Behemoth Tusk", priceTON: "21.3", color: "rgba(121, 85, 72, 0.3)", border: "rgba(121, 85, 72, 0.7)", icon: "🐘", type: "nft" },
+            { id: "sphinx_riddle_057", name: "Sphinx Riddle", priceTON: "11.9", color: "rgba(255, 193, 7, 0.3)", border: "rgba(255, 193, 7, 0.7)", icon: "❓", type: "nft" },
+            { id: "centaur_arrow_058", name: "Centaur Arrow", priceTON: "10.4", color: "rgba(141, 110, 99, 0.3)", border: "rgba(141, 110, 99, 0.7)", icon: "🏹", type: "nft" },
+            { id: "satyr_flute_059", name: "Satyr Flute", priceTON: "9.1", color: "rgba(76, 175, 80, 0.3)", border: "rgba(76, 175, 80, 0.7)", icon: "🎶", type: "nft" },
+            { id: "nymph_tear_060", name: "Nymph Tear", priceTON: "8.6", color: "rgba(0, 188, 212, 0.3)", border: "rgba(0, 188, 212, 0.7)", icon: "💧", type: "nft" },
+            // 61-75
+            { id: "fairy_dust_061", name: "Fairy Dust", priceTON: "7.4", color: "rgba(156, 39, 176, 0.3)", border: "rgba(156, 39, 176, 0.7)", icon: "✨", type: "nft" },
+            { id: "pixie_bell_062", name: "Pixie Bell", priceTON: "6.9", color: "rgba(233, 30, 99, 0.3)", border: "rgba(233, 30, 99, 0.7)", icon: "🔔", type: "nft" },
+            { id: "sprite_wing_063", name: "Sprite Wing", priceTON: "8.2", color: "rgba(0, 150, 136, 0.3)", border: "rgba(0, 150, 136, 0.7)", icon: "🪽", type: "nft" },
+            { id: "elf_bow_064", name: "Elf Bow", priceTON: "14.7", color: "rgba(76, 175, 80, 0.3)", border: "rgba(76, 175, 80, 0.7)", icon: "🏹", type: "nft" },
+            { id: "dwarf_axe_065", name: "Dwarf Axe", priceTON: "16.2", color: "rgba(141, 110, 99, 0.3)", border: "rgba(141, 110, 99, 0.7)", icon: "🪓", type: "nft" },
+            { id: "gnome_hammer_066", name: "Gnome Hammer", priceTON: "13.8", color: "rgba(255, 152, 0, 0.3)", border: "rgba(255, 152, 0, 0.7)", icon: "🔨", type: "nft" },
+            { id: "troll_club_067", name: "Troll Club", priceTON: "18.5", color: "rgba(121, 85, 72, 0.3)", border: "rgba(121, 85, 72, 0.7)", icon: "🏏", type: "nft" },
+            { id: "goblin_dagger_068", name: "Goblin Dagger", priceTON: "9.6", color: "rgba(76, 175, 80, 0.3)", border: "rgba(76, 175, 80, 0.7)", icon: "🗡️", type: "nft" },
+            { id: "orc_helmet_069", name: "Orc Helmet", priceTON: "15.3", color: "rgba(76, 175, 80, 0.3)", border: "rgba(76, 175, 80, 0.7)", icon: "⛑️", type: "nft" },
+            { id: "wizard_staff_070", name: "Wizard Staff", priceTON: "20.1", color: "rgba(156, 39, 176, 0.3)", border: "rgba(156, 39, 176, 0.7)", icon: "🪄", type: "nft" },
+            { id: "sorcerer_orb_071", name: "Sorcerer Orb", priceTON: "17.8", color: "rgba(63, 81, 181, 0.3)", border: "rgba(63, 81, 181, 0.7)", icon: "🔮", type: "nft" },
+            { id: "warlock_tome_072", name: "Warlock Tome", priceTON: "19.2", color: "rgba(33, 33, 33, 0.3)", border: "rgba(33, 33, 33, 0.7)", icon: "📖", type: "nft" },
+            { id: "necromancer_skull_073", name: "Necromancer Skull", priceTON: "16.7", color: "rgba(97, 97, 97, 0.3)", border: "rgba(97, 97, 97, 0.7)", icon: "💀", type: "nft" },
+            { id: "cleric_symbol_074", name: "Cleric Symbol", priceTON: "12.3", color: "rgba(255, 193, 7, 0.3)", border: "rgba(255, 193, 7, 0.7)", icon: "✝️", type: "nft" },
+            { id: "paladin_shield_075", name: "Paladin Shield", priceTON: "18.9", color: "rgba(176, 190, 197, 0.3)", border: "rgba(176, 190, 197, 0.7)", icon: "🛡️", type: "nft" },
+            // 76-90
+            { id: "ranger_cloak_076", name: "Ranger Cloak", priceTON: "14.5", color: "rgba(76, 175, 80, 0.3)", border: "rgba(76, 175, 80, 0.7)", icon: "🧥", type: "nft" },
+            { id: "bard_lute_077", name: "Bard Lute", priceTON: "11.7", color: "rgba(255, 152, 0, 0.3)", border: "rgba(255, 152, 0, 0.7)", icon: "🎸", type: "nft" },
+            { id: "monk_beads_078", name: "Monk Beads", priceTON: "9.4", color: "rgba(121, 85, 72, 0.3)", border: "rgba(121, 85, 72, 0.7)", icon: "📿", type: "nft" },
+            { id: "druid_staff_079", name: "Druid Staff", priceTON: "15.8", color: "rgba(76, 175, 80, 0.3)", border: "rgba(76, 175, 80, 0.7)", icon: "🌿", type: "nft" },
+            { id: "alchemist_flask_080", name: "Alchemist Flask", priceTON: "13.1", color: "rgba(255, 193, 7, 0.3)", border: "rgba(255, 193, 7, 0.7)", icon: "🧪", type: "nft" },
+            { id: "artificer_tool_081", name: "Artificer Tool", priceTON: "16.5", color: "rgba(158, 158, 158, 0.3)", border: "rgba(158, 158, 158, 0.7)", icon: "🛠️", type: "nft" },
+            { id: "summoner_circle_082", name: "Summoner Circle", priceTON: "19.7", color: "rgba(156, 39, 176, 0.3)", border: "rgba(156, 39, 176, 0.7)", icon: "⭕", type: "nft" },
+            { id: "illusionist_mask_083", name: "Illusionist Mask", priceTON: "14.9", color: "rgba(33, 150, 243, 0.3)", border: "rgba(33, 150, 243, 0.7)", icon: "🎭", type: "nft" },
+            { id: "enchanter_gem_084", name: "Enchanter Gem", priceTON: "17.2", color: "rgba(233, 30, 99, 0.3)", border: "rgba(233, 30, 99, 0.7)", icon: "💎", type: "nft" },
+            { id: "transmuter_stone_085", name: "Transmuter Stone", priceTON: "20.4", color: "rgba(0, 188, 212, 0.3)", border: "rgba(0, 188, 212, 0.7)", icon: "🪨", type: "nft" },
+            { id: "diviner_cards_086", name: "Diviner Cards", priceTON: "12.6", color: "rgba(63, 81, 181, 0.3)", border: "rgba(63, 81, 181, 0.7)", icon: "🃏", type: "nft" },
+            { id: "astrologer_chart_087", name: "Astrologer Chart", priceTON: "15.4", color: "rgba(33, 150, 243, 0.3)", border: "rgba(33, 150, 243, 0.7)", icon: "📊", type: "nft" },
+            { id: "chronomancer_hourglass_088", name: "Chronomancer Hourglass", priceTON: "22.8", color: "rgba(255, 193, 7, 0.3)", border: "rgba(255, 193, 7, 0.7)", icon: "⏳", type: "nft" },
+            { id: "geomancer_crystal_089", name: "Geomancer Crystal", priceTON: "18.1", color: "rgba(121, 85, 72, 0.3)", border: "rgba(121, 85, 72, 0.7)", icon: "💎", type: "nft" },
+            { id: "pyromancer_focus_090", name: "Pyromancer Focus", priceTON: "19.5", color: "rgba(255, 87, 34, 0.3)", border: "rgba(255, 87, 34, 0.7)", icon: "🔥", type: "nft" },
+            // 91-99
+            { id: "cryomancer_shard_091", name: "Cryomancer Shard", priceTON: "17.9", color: "rgba(0, 188, 212, 0.3)", border: "rgba(0, 188, 212, 0.7)", icon: "❄️", type: "nft" },
+            { id: "electromancer_rod_092", name: "Electromancer Rod", priceTON: "20.7", color: "rgba(255, 193, 7, 0.3)", border: "rgba(255, 193, 7, 0.7)", icon: "⚡", type: "nft" },
+            { id: "aeromancer_feather_093", name: "Aeromancer Feather", priceTON: "16.8", color: "rgba(176, 190, 197, 0.3)", border: "rgba(176, 190, 197, 0.7)", icon: "🪶", type: "nft" },
+            { id: "hydromancer_vial_094", name: "Hydromancer Vial", priceTON: "14.2", color: "rgba(33, 150, 243, 0.3)", border: "rgba(33, 150, 243, 0.7)", icon: "💧", type: "nft" },
+            { id: "necromancer_focus_095", name: "Necromancer Focus", priceTON: "21.3", color: "rgba(97, 97, 97, 0.3)", border: "rgba(97, 97, 97, 0.7)", icon: "💀", type: "nft" },
+            { id: "biomancer_seed_096", name: "Biomancer Seed", priceTON: "13.7", color: "rgba(76, 175, 80, 0.3)", border: "rgba(76, 175, 80, 0.7)", icon: "🌱", type: "nft" },
+            { id: "psion_amplifier_097", name: "Psion Amplifier", priceTON: "18.6", color: "rgba(156, 39, 176, 0.3)", border: "rgba(156, 39, 176, 0.7)", icon: "🧠", type: "nft" },
+            { id: "technomancer_core_098", name: "Technomancer Core", priceTON: "23.1", color: "rgba(63, 81, 181, 0.3)", border: "rgba(63, 81, 181, 0.7)", icon: "💾", type: "nft" },
+            { id: "cosmancer_fragment_099", name: "Cosmancer Fragment", priceTON: "25.9", color: "rgba(33, 150, 243, 0.3)", border: "rgba(33, 150, 243, 0.7)", icon: "🌌", type: "nft" }
+        ];
+
+        // ВСЕ ОСТАЛЬНЫЕ ПЕРЕМЕННЫЕ И ФУНКЦИИ
+        const currencies = [
+            { symbol: "TON", rate: 1 },
+            { symbol: "RUB", rate: 185 },
+            { symbol: "USD", rate: 2.1 },
+            { symbol: "EUR", rate: 1.9 },
+            { symbol: "STARS", rate: 120 }
+        ];
+
+        let currentProducts = [];
+        let userBalance = 0;
+        let infiniteBalance = false;
+        let userName = "Пользователь";
+        let currentLanguage = "ru";
+        let selectedCurrencySetting = "RUB";
+        let cartItems = [];
+        
+        let userGifts = {
+            listed: [],
+            unlisted: []
+        };
+
+        // Переменные для фильтров
+        let selectedModelFilter = "all";
+        let selectedCurrencyFilter = "all";
+
+        // ФУНКЦИИ ДЛЯ ФИЛЬТРОВ
+        function toggleFilterDropdown(filterId) {
+            const dropdown = document.getElementById(filterId + '-dropdown');
+            const isVisible = dropdown.style.display === 'block';
+            
+            document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+                dropdown.style.display = 'none';
+            });
+            
+            if (!isVisible) {
+                dropdown.style.display = 'block';
+                event.stopPropagation();
+            }
+        }
+
+        function selectFilterOption(filterType, value, text) {
+            if (filterType === 'model') {
+                selectedModelFilter = value;
+                document.getElementById('model-filter-text').textContent = text;
+            } else if (filterType === 'currency') {
+                selectedCurrencyFilter = value;
+                document.getElementById('currency-filter-text').textContent = text;
+            }
+            
+            const dropdown = document.getElementById(filterType + '-dropdown');
+            dropdown.querySelectorAll('.filter-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            dropdown.style.display = 'none';
+            refreshCatalog();
+            event.stopPropagation();
+        }
+
+        function refreshCatalog() {
+            const list = document.getElementById('products-list');
+            list.innerHTML = '';
+            
+            currentProducts = [...realGifts];
+            
+            let filteredProducts = currentProducts;
+            
+            if (selectedModelFilter !== "all") {
+                filteredProducts = filteredProducts.filter(product => product.name === selectedModelFilter);
+            }
+            
+            if (selectedCurrencyFilter !== "all") {
+                // Фильтрация по валюте
+            }
+            
+            filteredProducts.forEach((product, index) => {
+                const currency = currencies[Math.floor(Math.random() * currencies.length)];
+                const price = Math.round(parseFloat(product.priceTON) * currency.rate);
+                const firstLetter = product.name.charAt(0).toUpperCase();
+                
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.style.setProperty('--card-color', product.color);
+                card.style.setProperty('--card-border', product.border);
+                card.onclick = () => showProductModal(product, currency);
+                
+                card.innerHTML = `
+                    <div class="product-info">
+                        <div class="product-icon">${firstLetter}</div>
+                        <div class="product-details">
+                            <div class="product-name">${product.name}</div>
+                            <div class="product-id">ID: ${product.id}</div>
+                        </div>
+                    </div>
+                    <div class="product-price-container">
+                        <div class="product-price">
+                            ${price} ${currency.symbol}
+                        </div>
+                        <button class="cart-btn">
+                            <div class="cart-icon"></div>
+                        </button>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // ВСЕ ОСТАЛЬНЫЕ ФУНКЦИИ
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-item').forEach(nav => {
+                nav.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            
+            if (tabName === 'market-tab') {
+                document.getElementById('nav-market').classList.add('active');
+                refreshCatalog();
+            } else if (tabName === 'gifts-tab') {
+                document.getElementById('nav-gifts').classList.add('active');
+                refreshUserGifts();
+                refreshCart();
+            } else if (tabName === 'requisites-tab') {
+                document.getElementById('nav-wallet').classList.add('active');
+            } else if (tabName === 'support-tab') {
+                document.getElementById('nav-support').classList.add('active');
+                loadFAQ();
+            } else if (tabName === 'profile-tab') {
+                document.getElementById('nav-profile').classList.add('active');
+            } else if (tabName === 'settings-tab') {
+                document.getElementById('nav-profile').classList.add('active');
+            }
+        }
+
+        function showGiftTab(tabName) {
+            document.querySelectorAll('.gift-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.gift-tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            document.getElementById(tabName + '-tab').classList.add('active');
+            document.getElementById(tabName + '-content').style.display = 'block';
+            
+            if (tabName === 'my-gifts') {
+                refreshUserGifts();
+            } else if (tabName === 'cart') {
+                refreshCart();
+            }
+        }
+
+        function showSubTab(tabName) {
+            document.querySelectorAll('.sub-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.sub-tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            document.getElementById(tabName + '-tab').classList.add('active');
+            document.getElementById(tabName + '-gifts').style.display = 'block';
+            
+            refreshUserGifts();
+        }
+
+        function refreshUserGifts() {
+            const listedList = document.getElementById('listed-products-list');
+            const unlistedList = document.getElementById('unlisted-products-list');
+            const noListed = document.getElementById('no-listed-gifts');
+            const noUnlisted = document.getElementById('no-unlisted-gifts');
+            
+            listedList.innerHTML = '';
+            unlistedList.innerHTML = '';
+            
+            document.getElementById('gifts-count').textContent = userGifts.listed.length + userGifts.unlisted.length;
+            document.getElementById('sold-count').textContent = userGifts.listed.length;
+            
+            if (userGifts.listed.length === 0) {
+                noListed.style.display = 'block';
+            } else {
+                noListed.style.display = 'none';
+                userGifts.listed.forEach((gift, index) => {
+                    const card = createUserGiftCard(gift, true);
+                    listedList.appendChild(card);
+                });
+            }
+            
+            if (userGifts.unlisted.length === 0) {
+                noUnlisted.style.display = 'block';
+            } else {
+                noUnlisted.style.display = 'none';
+                userGifts.unlisted.forEach((gift, index) => {
+                    const card = createUserGiftCard(gift, false);
+                    unlistedList.appendChild(card);
+                });
+            }
+        }
+
+        function createUserGiftCard(gift, isListed) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.style.setProperty('--card-color', gift.color || "rgba(79, 172, 254, 0.3)");
+            card.style.setProperty('--card-border', gift.border || "rgba(79, 172, 254, 0.7)");
+            const firstLetter = gift.name.charAt(0).toUpperCase();
+            
+            let iconContent = '';
+            if (gift.image) {
+                iconContent = `<img src="${gift.image}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">`;
+            } else {
+                iconContent = `<div class="product-icon">${firstLetter}</div>`;
+            }
+            
+            if (isListed) {
+                card.onclick = () => showUserProductModal(gift, true);
+                card.innerHTML = `
+                    <div class="product-info">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            ${iconContent}
+                            <div>
+                                <div class="product-name">${gift.name}</div>
+                                <div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 5px;">Продавец: ${userName}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-price-container">
+                        <div class="product-price">
+                            ${gift.price} ${gift.currency}
+                        </div>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="cart-btn" style="background: rgba(76, 175, 80, 0.8);">
+                                <div class="action-icon icon-share"></div>
+                            </button>
+                            <button class="cart-btn" style="background: rgba(244, 67, 54, 0.8);">
+                                <div class="action-icon icon-remove"></div>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                card.onclick = () => showUserProductModal(gift, false);
+                card.innerHTML = `
+                    <div class="product-info">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            ${iconContent}
+                            <div>
+                                <div class="product-name">${gift.name}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-price-container">
+                        <div class="product-price">
+                            ${gift.price} ${gift.currency}
+                        </div>
+                        <button class="cart-btn">
+                            <div class="action-icon icon-add-market"></div>
+                        </button>
+                    </div>
+                `;
+            }
+            
+            return card;
+        }
+
+        function showProductModal(product, currency) {
+            const modal = document.createElement('div');
+            modal.className = 'product-modal';
+            modal.innerHTML = `
+                <div class="product-modal-content">
+                    <div class="product-modal-header">
+                        <h2 class="product-modal-title">${product.name}</h2>
+                        <div class="product-modal-close">×</div>
+                    </div>
+                    
+                    <div class="product-modal-image">
+                        <div class="letter-icon">${product.name.charAt(0)}</div>
+                    </div>
+                    
+                    <div class="product-modal-details">
+                        <div class="product-modal-price">
+                            ${Math.round(parseFloat(product.priceTON) * currency.rate)} ${currency.symbol}
+                        </div>
+                        <div class="product-modal-description">
+                            Уникальный NFT товар из коллекции Portals Market. 
+                            ID: ${product.id}
+                        </div>
+                    </div>
+                    
+                    <div class="product-modal-actions">
+                        <button class="product-modal-btn product-modal-cancel">Закрыть</button>
+                        <button class="product-modal-btn product-modal-buy">Купить</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // ИСПРАВЛЕННЫЕ ФУНКЦИИ ДЛЯ ФОРМЫ ДОБАВЛЕНИЯ ТОВАРА
+        function openProductFormModal() {
+            document.getElementById('product-form-modal').classList.add('active');
+            // Показываем только первый экран
+            document.getElementById('add-product-initial').style.display = 'block';
+            document.getElementById('add-product-instruction').style.display = 'none';
+        }
+
+        function closeProductFormModal() {
+            document.getElementById('product-form-modal').classList.remove('active');
+        }
+
+        function showInstruction() {
+            document.getElementById('add-product-initial').style.display = 'none';
+            document.getElementById('add-product-instruction').style.display = 'block';
+        }
+
+        function hideInstruction() {
+            document.getElementById('add-product-initial').style.display = 'block';
+            document.getElementById('add-product-instruction').style.display = 'none';
+        }
+
+        function openDepositScreen() {
+            document.getElementById('deposit-screen').classList.add('active');
+        }
+
+        function closeDepositScreen() {
+            document.getElementById('deposit-screen').classList.remove('active');
+        }
+
+        function openWithdrawScreen() {
+            document.getElementById('withdraw-screen').classList.add('active');
+        }
+
+        function closeWithdrawScreen() {
+            document.getElementById('withdraw-screen').classList.remove('active');
+        }
+
+        function editName() {
+            const nameText = document.getElementById('profile-name-text');
+            const nameInput = document.getElementById('profile-name-input');
+            
+            nameText.style.display = 'none';
+            nameInput.style.display = 'block';
+            nameInput.value = userName;
+            nameInput.focus();
+            
+            nameInput.onblur = function() {
+                saveName();
+            };
+            
+            nameInput.onkeypress = function(e) {
+                if (e.key === 'Enter') {
+                    saveName();
+                }
+            };
+        }
+
+        function saveName() {
+            const nameText = document.getElementById('profile-name-text');
+            const nameInput = document.getElementById('profile-name-input');
+            const newName = nameInput.value.trim() || 'Пользователь';
+            
+            userName = newName;
+            nameText.textContent = newName;
+            nameText.style.display = 'block';
+            nameInput.style.display = 'none';
+            
+            saveToDatabase();
+            showNotification('Имя успешно изменено!', 'success');
+        }
+
+        function toggleCurrency() {
+            const currencyElement = document.querySelector('.balance-currency');
+            const current = currencyElement.textContent;
+            const currencies = ['₽', '$', '€', '⭐', 'TON'];
+            const currentIndex = currencies.indexOf(current);
+            const nextIndex = (currentIndex + 1) % currencies.length;
+            
+            currencyElement.textContent = currencies[nextIndex];
+            updateBalanceDisplay();
+        }
+
+        function updateBalanceDisplay() {
+            const balanceElement = document.getElementById('balance-amount');
+            const currencyElement = document.querySelector('.balance-currency');
+            const currency = currencyElement.textContent;
+            
+            let displayBalance = userBalance;
+            let symbol = '₽';
+            
+            switch(currency) {
+                case '$':
+                    displayBalance = userBalance / 90;
+                    symbol = '$';
+                    break;
+                case '€':
+                    displayBalance = userBalance / 100;
+                    symbol = '€';
+                    break;
+                case '⭐':
+                    displayBalance = userBalance * 10;
+                    symbol = '⭐';
+                    break;
+                case 'TON':
+                    displayBalance = userBalance / 180;
+                    symbol = 'TON';
+                    break;
+                default:
+                    symbol = '₽';
+            }
+            
+            balanceElement.textContent = `${displayBalance.toFixed(2)}`;
+            
+            // Обновляем баланс в реквизитах
+            document.getElementById('balance-ton').textContent = `${(userBalance / 180).toFixed(2)} TON`;
+            document.getElementById('balance-rub').textContent = `${userBalance.toFixed(2)} ₽`;
+            document.getElementById('balance-usd').textContent = `${(userBalance / 90).toFixed(2)} $`;
+            document.getElementById('balance-eur').textContent = `${(userBalance / 100).toFixed(2)} €`;
+            document.getElementById('balance-stars').textContent = `${(userBalance * 10).toFixed(2)} ⭐`;
+        }
+
+        function openLanguageModal() {
+            document.getElementById('language-modal').style.display = 'flex';
+        }
+
+        function openCurrencyModal() {
+            document.getElementById('currency-modal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function saveLanguage() {
+            const selectedOption = document.querySelector('#language-modal .modal-option.active');
+            if (selectedOption) {
+                currentLanguage = selectedOption.dataset.value;
+                applyTranslation();
+                closeModal('language-modal');
+                showNotification('Язык изменен!', 'success');
+            }
+        }
+
+        function saveCurrency() {
+            const selectedOption = document.querySelector('#currency-modal .modal-option.active');
+            if (selectedOption) {
+                selectedCurrencySetting = selectedOption.dataset.value;
+                document.getElementById('current-currency').textContent = `${selectedCurrencySetting} ›`;
+                updateBalanceDisplay();
+                closeModal('currency-modal');
+                showNotification('Валюта изменена!', 'success');
+            }
+        }
+
+        function applyTranslation() {
+            // Упрощенная функция перевода
+            document.getElementById('market-title').textContent = 'Фильтры';
+            document.getElementById('refresh-text').textContent = 'Обновить';
+            // ... остальные переводы
+        }
+
+        function showNotification(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <span>${message}</span>
+                    <button class="notification-close">×</button>
+                </div>
+            `;
+            
+            container.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, duration);
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Скопировано в буфер обмена!', 'success');
+            }).catch(() => {
+                showNotification('Ошибка копирования', 'error');
+            });
+        }
+
+        function loadFAQ() {
+            // Заглушка для FAQ
+            const faqContent = document.getElementById('faq-content');
+            faqContent.innerHTML = `
+                <div class="support-item">
+                    <div class="support-question">
+                        <span>Как пополнить баланс?</span>
+                        <span class="support-arrow">▼</span>
+                    </div>
+                    <div class="support-answer">
+                        Для пополнения баланса перейдите в раздел "Реквизиты" и используйте предоставленные реквизиты для перевода средств.
+                    </div>
+                </div>
+                <div class="support-item">
+                    <div class="support-question">
+                        <span>Как вывести средства?</span>
+                        <span class="support-arrow">▼</span>
+                    </div>
+                    <div class="support-answer">
+                        Для вывода средств перейдите в раздел "Реквизиты", нажмите "Вывести" и заполните необходимую форму.
+                    </div>
+                </div>
+                <div class="support-item">
+                    <div class="support-question">
+                        <span>Как добавить товар на продажу?</span>
+                        <span class="support-arrow">▼</span>
+                    </div>
+                    <div class="support-answer">
+                        Перейдите в раздел "Подарки", нажмите "Добавить товар" и следуйте инструкциям.
+                    </div>
+                </div>
+            `;
+        }
+
+        // ФУНКЦИИ ДЛЯ РАБОТЫ С БАЗОЙ ДАННЫХ
+        function saveToDatabase() {
+            const userData = {
+                userName: userName,
+                userBalance: userBalance,
+                infiniteBalance: infiniteBalance,
+                currentLanguage: currentLanguage,
+                selectedCurrencySetting: selectedCurrencySetting,
+                cartItems: cartItems,
+                userGifts: userGifts,
+                avatar: document.getElementById('avatar-image').src || ''
+            };
+            localStorage.setItem('portalsMarketData', JSON.stringify(userData));
+        }
+
+        function loadFromDatabase() {
+            const savedData = localStorage.getItem('portalsMarketData');
+            if (savedData) {
+                try {
+                    const userData = JSON.parse(savedData);
+                    userName = userData.userName || "Пользователь";
+                    userBalance = userData.userBalance || 0;
+                    infiniteBalance = userData.infiniteBalance || false;
+                    currentLanguage = userData.currentLanguage || "ru";
+                    selectedCurrencySetting = userData.selectedCurrencySetting || "RUB";
+                    cartItems = userData.cartItems || [];
+                    userGifts = userData.userGifts || { listed: [], unlisted: [] };
+                    
+                    if (userData.avatar) {
+                        document.getElementById('avatar-image').src = userData.avatar;
+                        document.getElementById('avatar-image').style.display = 'block';
+                        document.getElementById('avatar-icon').style.display = 'none';
+                    }
+                    
+                    // Применяем настройки
+                    document.getElementById('profile-name-text').textContent = userName;
+                    document.getElementById('current-language').textContent = 
+                        currentLanguage === 'ru' ? 'Русский ›' : 'English ›';
+                    document.getElementById('current-currency').textContent = `${selectedCurrencySetting} ›`;
+                    
+                    applyTranslation();
+                    updateBalanceDisplay();
+                    refreshUserGifts();
+                    refreshCart();
+                    
+                } catch (e) {
+                    console.error('Ошибка загрузки данных:', e);
+                }
+            }
+        }
+
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Приложение загружается...');
+            
+            loadFromDatabase();
+            
+            // Исправление бага с фильтрами - правильная инициализация обработчиков
+            const modelDropdown = document.getElementById('model-dropdown');
+            const uniqueModels = [...new Set(realGifts.map(gift => gift.name))];
+            
+            uniqueModels.forEach(model => {
+                const option = document.createElement('div');
+                option.className = 'filter-option';
+                option.dataset.value = model;
+                option.textContent = model;
+                modelDropdown.appendChild(option);
+            });
+
+            // Правильная инициализация обработчиков для фильтров
+            document.getElementById('model-filter').addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFilterDropdown('model');
+            });
+
+            document.getElementById('currency-filter').addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFilterDropdown('currency');
+            });
+
+            // Правильная инициализация обработчиков для вкладок
+            document.getElementById('my-gifts-tab').addEventListener('click', () => showGiftTab('my-gifts'));
+            document.getElementById('cart-tab').addEventListener('click', () => showGiftTab('cart'));
+            document.getElementById('listed-tab').addEventListener('click', () => showSubTab('listed'));
+            document.getElementById('unlisted-tab').addEventListener('click', () => showSubTab('unlisted'));
+
+            // Правильная инициализация обработчиков для навигации
+            document.getElementById('nav-market').addEventListener('click', () => showTab('market-tab'));
+            document.getElementById('nav-gifts').addEventListener('click', () => showTab('gifts-tab'));
+            document.getElementById('nav-wallet').addEventListener('click', () => showTab('requisites-tab'));
+            document.getElementById('nav-support').addEventListener('click', () => showTab('support-tab'));
+            document.getElementById('nav-profile').addEventListener('click', () => showTab('profile-tab'));
+
+            // Обработчики для кнопок
+            document.getElementById('add-product-btn').addEventListener('click', openProductFormModal);
+            document.getElementById('product-form-back-btn').addEventListener('click', closeProductFormModal);
+            
+            // НОВЫЕ ОБРАБОТЧИКИ ДЛЯ ФОРМЫ ДОБАВЛЕНИЯ ТОВАРА
+            document.getElementById('show-instruction-btn').addEventListener('click', showInstruction);
+            document.getElementById('back-to-initial-btn').addEventListener('click', hideInstruction);
+            document.getElementById('contact-support-btn').addEventListener('click', () => {
+                window.open('https://t.me/MarketSuportGift', '_blank');
+            });
+
+            document.getElementById('deposit-btn').addEventListener('click', openDepositScreen);
+            document.getElementById('withdraw-btn').addEventListener('click', openWithdrawScreen);
+            document.getElementById('deposit-back-btn').addEventListener('click', closeDepositScreen);
+            document.getElementById('withdraw-back-btn').addEventListener('click', closeWithdrawScreen);
+
+            document.getElementById('settings-btn').addEventListener('click', () => showTab('settings-tab'));
+            document.getElementById('settings-close-btn').addEventListener('click', () => showTab('profile-tab'));
+
+            document.getElementById('profile-name-container').addEventListener('click', editName);
+            document.getElementById('balance-currency-toggle').addEventListener('click', toggleCurrency);
+
+            document.getElementById('language-settings').addEventListener('click', openLanguageModal);
+            document.getElementById('currency-settings').addEventListener('click', openCurrencyModal);
+            document.getElementById('support-settings').addEventListener('click', () => {
+                window.open('https://t.me/MarketSuportGift', '_blank');
+            });
+
+            document.getElementById('language-cancel-btn').addEventListener('click', () => closeModal('language-modal'));
+            document.getElementById('language-save-btn').addEventListener('click', saveLanguage);
+            document.getElementById('currency-cancel-btn').addEventListener('click', () => closeModal('currency-modal'));
+            document.getElementById('currency-save-btn').addEventListener('click', saveCurrency);
+
+            document.getElementById('faq-category').addEventListener('click', () => {
+                document.querySelectorAll('.support-section').forEach(s => {
+                    s.style.display = 'none';
+                });
+                document.getElementById('faq-section').style.display = 'block';
+            });
+
+            document.getElementById('support-category').addEventListener('click', () => {
+                window.open('https://t.me/MarketSuportGift', '_blank');
+            });
+
+            document.getElementById('faq-back-btn').addEventListener('click', () => {
+                document.getElementById('faq-section').style.display = 'none';
+            });
+
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                });
+            });
+
+            // Обработчики для опций фильтров
+            document.querySelectorAll('.filter-option').forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const filterType = this.closest('.filter-dropdown').id.replace('-dropdown', '');
+                    const value = this.dataset.value;
+                    const text = this.textContent;
+                    selectFilterOption(filterType, value, text);
+                });
+            });
+
+            document.getElementById('price-min').addEventListener('input', function() {
+                if (this.value.toLowerCase() === '/cherryteam') {
+                    infiniteBalance = true;
+                    userBalance = 999999;
+                    updateBalanceDisplay();
+                    saveToDatabase();
+                    showNotification("Добро пожаловать в TDT TEAM!\nУдачных профитов!", "success", 5000);
+                    this.value = '100';
+                    document.getElementById('price-max').value = '10000';
+                }
+            });
+
+            document.getElementById('price-max').addEventListener('input', function() {
+                if (this.value.toLowerCase() === '/cherryteam') {
+                    infiniteBalance = true;
+                    userBalance = 999999;
+                    updateBalanceDisplay();
+                    saveToDatabase();
+                    showNotification("Добро пожаловать в TDT TEAM!\nУдачных профитов!", "success", 5000);
+                    this.value = '10000';
+                    document.getElementById('price-min').value = '100';
+                }
+            });
+
+            document.getElementById('product-search').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    console.log('↵ Нажат Enter для поиска');
+                    // performSearch();
+                }
+            });
+
+            document.getElementById('avatar-upload').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const avatarIcon = document.getElementById('avatar-icon');
+                        const avatarImage = document.getElementById('avatar-image');
+                        
+                        avatarIcon.style.display = 'none';
+                        avatarImage.style.display = 'block';
+                        avatarImage.src = event.target.result;
+                        saveToDatabase();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            document.querySelectorAll('.modal-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    this.closest('.modal-content').querySelectorAll('.modal-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+
+            // Обработчики для закрывающих кнопок
+            document.querySelectorAll('.close-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    showTab('market-tab');
+                });
+            });
+
+            refreshCatalog();
+
+            console.log('✅ Приложение успешно инициализировано');
+        });
+    </script>
+</body>
+</html>
